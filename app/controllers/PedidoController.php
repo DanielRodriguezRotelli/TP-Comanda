@@ -15,12 +15,14 @@ class PedidoController extends Pedido implements IApiUsable
     $parametros = $request->getParsedBody();
     
     $idMesa = $parametros['idMesa'];
-    $codigoPedido = $parametros['codigoPedido'];
+    //$codigoPedido = $parametros['codigoPedido'];
     $idMozo = $parametros['idMozo'];
     $nombreCliente = $parametros['nombreCliente'];
     $productos = $parametros['productos'];  
     $estado = $parametros['estado'];     
-
+    $codigoPedido = PedidoController::AsignarCodigoAlPedido();
+    $horarioActual = new DateTime("now");
+    
     $auxMesa = Mesa::obtenerMesaPorId($idMesa);
     if (!$auxMesa->disponible) 
     {
@@ -40,10 +42,11 @@ class PedidoController extends Pedido implements IApiUsable
     
     $pedido = new Pedido();   
     $pedido->idMesa = $idMesa; 
-    $pedido->codigoPedido = $codigoPedido; 
+    $pedido->codigoPedido = $codigoPedido;
     $pedido->idMozo = $idMozo; 
     $pedido->nombreCliente = $nombreCliente;   
     $pedido->estado = $estado;  
+    $pedido->horarioAlta = $horarioActual;
 
     $auxproductos = json_decode($productos);
     
@@ -61,6 +64,8 @@ class PedidoController extends Pedido implements IApiUsable
 
     $PedidoDb = $this->TraerUltimoPedidoDesdeDB();
 
+    //$pedido->codigoPedido = PedidoController::AsignarCodigoAlPedido($PedidoDb);
+
     if (isset($_FILES["fotoMesa"]["tmp_name"])) 
     {
       $auxFotoPedido = $this->tomarFoto($PedidoDb);
@@ -68,8 +73,7 @@ class PedidoController extends Pedido implements IApiUsable
 
     }
     LogController::CargarUno($request, "Alta de un pedido");   
-    $payload = json_encode(array("mensaje" => "Pedido creado con exito. El codigo de su pedido es: " 
-    . $pedido->codigoPedido . ". Con el podra verificar el estado de su pedido"));  
+    $payload = json_encode(array("mensaje" => "Pedido creado con exito", "codigo" => $pedido->codigoPedido));  
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
   }
@@ -87,6 +91,32 @@ class PedidoController extends Pedido implements IApiUsable
     }
     $auxPedido = Pedido::obtenerPedidoPorId($ultimoId);
     return $auxPedido;
+  }
+
+  public static function TraerUltimoIdPedido()
+  {
+    $lista = Pedido::obtenerTodos();
+    $ultimoId = 0;
+    foreach ($lista as $pedido) 
+    {
+      if ($ultimoId < $pedido->id) 
+      {
+        $ultimoId = $pedido->id;
+      }
+    }
+    return $ultimoId;
+  }
+
+
+  public static function AsignarCodigoAlPedido()
+  {
+    $idPedido = PedidoController::TraerUltimoIdPedido();
+    $codigo = NULL;
+    if($idPedido)
+    {
+      $codigo = "P".$idPedido + 1;  
+    } 
+    return $codigo;
   }
 
 
@@ -115,9 +145,11 @@ class PedidoController extends Pedido implements IApiUsable
   public function TraerTodos($request, $response, $args)
   {
     $lista = Pedido::obtenerTodos();
+
+    //$pedido = PedidoController::TraerUltimoPedidoDesdeDB();
     if($lista)
     {
-      $payload = json_encode(array("Lista de pedidos" => $lista));
+      $payload = json_encode($lista);
       $response->getBody()->write($payload);
       $response = $response->withStatus(200);
       return $response->withHeader('Content-Type', 'application/json');
@@ -215,8 +247,8 @@ class PedidoController extends Pedido implements IApiUsable
   {
     $parametros = $request->getParsedBody();
     
-    $idPedido= $parametros["idPedido"];
-    $pedidoAModificar=Pedido::obtenerPedidoPorId($idPedido);
+    $codigoPedido= $parametros["codigoPedido"];
+    $pedidoAModificar=Pedido::obtenerPedidoPorCodigo($codigoPedido);
 
     if (!$pedidoAModificar) 
     {
@@ -302,26 +334,38 @@ class PedidoController extends Pedido implements IApiUsable
     {
       date_default_timezone_set("America/Argentina/Buenos_Aires");
       $horarioActual = new DateTime("now");
-      $horarioPedido = datetime::createfromformat('Y-m-d H:i:s', $pedido->horarioPautado);
-      if($pedido->horarioPautado != null)
+      
+      if ($pedido->estado == "entregado") 
       {
-        if($horarioPedido < $horarioActual)
-        {
-          $payload = json_encode(array("mensaje" => "El pedido ya ha sido terminado. Sera servido a la brevedad")); 
-        }
-        else
-        {
-          $diferenciaEnMinutos = $horarioActual->diff($horarioPedido);
-          $minutosRestantes = $diferenciaEnMinutos->days * 24 * 60;
-          $minutosRestantes += $diferenciaEnMinutos->h * 60;
-          $minutosRestantes += $diferenciaEnMinutos->i; 
-          $payload = json_encode(array("mensaje" => "El pedido sera servido en: " . $minutosRestantes . " minutos"));
-          $response = $response->withStatus(200);             
-        }
-      } 
+        $payload = json_encode(array("mensaje" => "El pedido ya ha sido entregado.")); 
+      }
       else 
       {
-        $payload = json_encode(array("mensaje" => "Algun producto del pedido aun no ha comenzado a prepararse.")); 
+        if($pedido->horarioPautado != null)
+        {
+          $horarioPedido = datetime::createfromformat('Y-m-d H:i:s', $pedido->horarioPautado);
+          if($horarioPedido > $horarioActual)
+          {
+            $diferenciaEnMinutos = $horarioActual->diff($horarioPedido);
+            $minutosRestantes = $diferenciaEnMinutos->days * 24 * 60;
+            $minutosRestantes += $diferenciaEnMinutos->h * 60;
+            $minutosRestantes += $diferenciaEnMinutos->i; 
+            $payload = json_encode(array("Pedido" => "a tiempo", "Tiempo de Entrega" => "En ".$minutosRestantes . " min")); 
+          }
+          else
+          {
+            $diferenciaEnMinutos = $horarioPedido->diff($horarioActual);
+            $minutosRestantes = $diferenciaEnMinutos->days * 24 * 60;
+            $minutosRestantes += $diferenciaEnMinutos->h * 60;
+            $minutosRestantes += $diferenciaEnMinutos->i; 
+            $payload = json_encode(array("Pedido" => "con demora", "Demora" => $minutosRestantes . " min"));
+            $response = $response->withStatus(200);             
+          }
+        } 
+        else 
+        {
+          $payload = json_encode(array("mensaje" => "Algun producto del pedido aun no ha comenzado a prepararse.")); 
+        }
       }
     }
     else
@@ -330,6 +374,133 @@ class PedidoController extends Pedido implements IApiUsable
       $response = $response->withStatus(400); 
     }
 
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+  }
+
+  public function EmitirListadoPedidosYTiempoDeDemora($request, $response, $args)
+  {
+    
+    $pedidos = Pedido::obtenerTodos();
+    $cantidadDePedidos = count($pedidos);
+    $listadoDePedidosYDemoras = array();
+    $minutosDeDemora = "";
+    $minutosDePreparado = "";
+    $demora = "";
+    $preparado = "";
+   
+
+    if($cantidadDePedidos>0)
+    {    
+      foreach($pedidos as $pedido)
+      {
+        $horarioAlta = datetime::createfromformat('Y-m-d H:i:s', $pedido->horarioAlta);
+
+        if ($pedido->estado == "cancelado") 
+        {
+          $demora = "cancelado";
+          $preparado = "cancelado";
+        }
+
+        if ($pedido->estado == "pendiente") 
+        {
+          $demora = "pendiente";
+          $preparado = "pendiente";
+        }
+
+        if ($pedido->estado == "en preparacion") 
+        {
+          $horarioPautado = datetime::createfromformat('Y-m-d H:i:s', $pedido->horarioPautado);
+          $horarioEntregado = new DateTime();
+
+          $diferenciaEnMinutos = $horarioEntregado->diff($horarioAlta);
+          $minutosDePreparado = $diferenciaEnMinutos->days * 24 * 60;
+          $minutosDePreparado += $diferenciaEnMinutos->h * 60;
+          $minutosDePreparado += $diferenciaEnMinutos->i;
+          $preparado = $minutosDePreparado." min";
+          
+          if ($horarioEntregado > $horarioPautado) 
+          {
+            $diferenciaEnMinutos = $horarioEntregado->diff($horarioPautado);
+            $minutosDeDemora = $diferenciaEnMinutos->days * 24 * 60;
+            $minutosDeDemora += $diferenciaEnMinutos->h * 60;
+            $minutosDeDemora += $diferenciaEnMinutos->i;
+            $demora = $minutosDeDemora. " min";
+          }
+          else 
+          {
+            $demora = "sin demora";
+          } 
+        }
+
+        if ($pedido->estado == "listo para servir") 
+        {
+          $horarioPautado = datetime::createfromformat('Y-m-d H:i:s', $pedido->horarioPautado);
+          $horarioEntregado = new DateTime();
+
+          $diferenciaEnMinutos = $horarioEntregado->diff($horarioAlta);
+          $minutosDePreparado = $diferenciaEnMinutos->days * 24 * 60;
+          $minutosDePreparado += $diferenciaEnMinutos->h * 60;
+          $minutosDePreparado += $diferenciaEnMinutos->i;
+          $preparado = $minutosDePreparado." min";
+          
+          if ($horarioEntregado > $horarioPautado) 
+          {
+            $diferenciaEnMinutos = $horarioEntregado->diff($horarioPautado);
+            $minutosDeDemora = $diferenciaEnMinutos->days * 24 * 60;
+            $minutosDeDemora += $diferenciaEnMinutos->h * 60;
+            $minutosDeDemora += $diferenciaEnMinutos->i;
+            $demora = $minutosDeDemora. " min";
+          }
+          else 
+          {
+            $demora = "sin demora";
+          } 
+        }
+
+        if ($pedido->estado == "entregado") 
+        {
+          $horarioPautado = datetime::createfromformat('Y-m-d H:i:s', $pedido->horarioPautado);
+          $horarioEntregado = datetime::createfromformat('Y-m-d H:i:s', $pedido->horarioEntregado);
+          
+          $diferenciaEnMinutos = $horarioEntregado->diff($horarioAlta);
+          $minutosDePreparado = $diferenciaEnMinutos->days * 24 * 60;
+          $minutosDePreparado += $diferenciaEnMinutos->h * 60;
+          $minutosDePreparado += $diferenciaEnMinutos->i;
+          $preparado = $minutosDePreparado." min";
+          
+          if ($horarioEntregado > $horarioPautado) 
+          {
+            $diferenciaEnMinutos = $horarioEntregado->diff($horarioPautado);
+            $minutosDeDemora = $diferenciaEnMinutos->days * 24 * 60;
+            $minutosDeDemora += $diferenciaEnMinutos->h * 60;
+            $minutosDeDemora += $diferenciaEnMinutos->i;
+            $demora = $minutosDeDemora. " min";
+          }
+          else 
+          {
+            $demora = "sin demora";
+          } 
+        }
+        
+        $listadoDePedidosYDemoras[] = array(
+          "codigoPedido" => $pedido->codigoPedido,
+          "estado" => $pedido->estado,
+          "entrega" => $preparado,
+          "demora" => $demora
+        );
+        
+        $response = $response->withStatus(200);
+        LogController::CargarUno($request, "Emitir informe de pedidos y demoras de cada uno");  
+      }
+    }
+    else
+    {
+      $listadoDePedidosYDemoras = array("Mensaje" => "No hay pedidos."); 
+      $response = $response->withStatus(400);
+    }
+
+    $payload = json_encode($listadoDePedidosYDemoras);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
   }
@@ -362,7 +533,7 @@ class PedidoController extends Pedido implements IApiUsable
     if($mesaMasUsada)
     {
       LogController::CargarUno($request, "Emitir informe de mesa más usada");  
-      $payload = json_encode(array("La mesa más usada es: " => $mesaMasUsada));
+      $payload = json_encode($mesaMasUsada);
       $response = $response->withStatus(200);
     }
     else
@@ -392,8 +563,13 @@ class PedidoController extends Pedido implements IApiUsable
         $minutosDeDemora += $diferenciaEnMinutos->h * 60;
         $minutosDeDemora += $diferenciaEnMinutos->i;   
 
-        $mensaje = "Pedido: " . $pedido->codigoPedido. " Horario pautado: " . $pedido->horarioPautado . " Horario entregado: " . $pedido->horarioEntregado. " Minutos de demora: " . $minutosDeDemora;
-        array_push($listadoDePedidosNoAtiempo, $mensaje);
+        $listadoDePedidosNoAtiempo[] = array(
+          "Pedido" => $pedido->codigoPedido,
+          "Horario pautado" => $pedido->horarioPautado,
+          "Horario entregado" => $pedido->horarioEntregado,
+          "Minutos de demora" => $minutosDeDemora
+        );
+
         $response = $response->withStatus(200);
         LogController::CargarUno($request, "Emitir informe de pedidos no entregados a tiempo");  
       }
@@ -413,26 +589,27 @@ class PedidoController extends Pedido implements IApiUsable
   {  
     $pedidos = Pedido::InformarMesasOrdenadasPorFacturacion();
     $cantidadDePedidos = count($pedidos);
-    $listadoDePedidosNoAtiempo = array();
+    $mesasConFacturacion = array();
 
     if($cantidadDePedidos>0)
     {    
       foreach($pedidos as $pedido)
       {
-        $mensaje = "Id Mesa: " . $pedido->idMesa. " Código de mesa: " . $pedido->codigoMesa .
-        " Código de pedido: " . $pedido->codigoPedido . " Total Facturado: " . $pedido->totalFacturado;
-        array_push($listadoDePedidosNoAtiempo, $mensaje);
+        $mesasConFacturacion[] = array(
+          "Código de mesa" => $pedido->codigoMesa,
+          "Código de pedido" => $pedido->codigoPedido,
+          "Total Facturado" => $pedido->totalFacturado
+        );
       }
+      $payload = json_encode($mesasConFacturacion);
       $response = $response->withStatus(200);
       LogController::CargarUno($request, "Emitir informes de mesas por monto de facturación");  
     }
     else
     {
-      $listadoDePedidosNoAtiempo = array("Mensaje" => "No hay mesas a informar."); 
+      $payload = json_encode(array("Mensaje" => "No hay mesas a informar."));
       $response = $response->withStatus(400);
     }
-
-    $payload = json_encode($listadoDePedidosNoAtiempo);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
   }
@@ -445,11 +622,24 @@ class PedidoController extends Pedido implements IApiUsable
 
     $pedido = Pedido::InformarFacturadoEntreFechasPorMesa($idMesa,$fechaDesde, $fechaHasta);
 
+    $mesaConMayorFacturacion = array();
+    /*
+    echo"<br>";
+    var_dump($pedido);
+    echo"<br>";
+    */
     if($pedido)
     { 
+      $mesaConMayorFacturacion[] = array(
+        "Código de mesa" => $pedido->codigoMesa,
+        "Desde" => $fechaDesde,
+        "Hasta" => $fechaHasta,
+        "Total Facturado" => $pedido->facturacion_total
+      );
+
       LogController::CargarUno($request, "Informe de lo facturado por mesa entre determinadas fechas");     
-      $mensaje = "Mesa con mayor facturacion => Id mesa: " . $pedido->idMesa. " Facturacion total desde el " . $fechaDesde . " al " . $fechaHasta . " : $" . $pedido->facturacion_total;
-      $payload = json_encode($mensaje);
+      //$mensaje = "Mesa con mayor facturacion => Id mesa: " . $pedido->idMesa. " Facturacion total desde el " . $fechaDesde . " al " . $fechaHasta . " : $" . $pedido->facturacion_total;
+      $payload = json_encode($mesaConMayorFacturacion);
       $response = $response->withStatus(200);
     }
     else

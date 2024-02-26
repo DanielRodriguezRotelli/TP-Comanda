@@ -80,15 +80,15 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->delete('/borrarMesa/{id}', \MesaController::class . ':BorrarUno');
   $group->get('/Informes/InformeDeEstadoDeMesas', \MesaController::class . ':EmitirInformeDeEstadoDeMesas')->add(new CheckSocioMiddleware());
   $group->put('/ServirMesa', \MesaController::class . ':ServirMesa')->add(new CheckMozoMiddleware());
-  $group->get('/CobrarMesa/{id}', \MesaController::class . ':CobrarMesa')->add(new CheckMozoMiddleware());
-  $group->put('/CerrarMesa/{id}',  \MesaController::class . ':CerrarMesa')->add(new CheckSocioMiddleware());
+  $group->put('/CobrarMesa', \MesaController::class . ':CobrarMesa')->add(new CheckMozoMiddleware());
+  $group->put('/CerrarMesa',  \MesaController::class . ':CerrarMesa')->add(new CheckSocioMiddleware());
 })->add(new CheckTokenMiddleware());
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->post('/altaPedido', \PedidoController::class . ':CargarUno')->add(new CheckMozoMiddleware());
   $group->post('/tomarFotoPosterior', \PedidoController::class . ':tomarFotoPosterior')->add(new CheckMozoMiddleware());
   $group->get('/traerPedidos', \PedidoController::class . ':TraerTodos');
-  $group->get('/InformeDePedidosYDemoras',  \PedidoController::class . ':EmitirInformeTiempoDeDemoraPedido')->add(new CheckSocioMiddleware());
+  $group->get('/InformeDePedidosYDemoras',  \PedidoController::class . ':EmitirListadoPedidosYTiempoDeDemora')->add(new CheckSocioMiddleware());
   $group->put('/modificarPedido/{id}', \PedidoController::class . ':ModificarUno');
   $group->delete('/borrarPedido/{id}', \PedidoController::class . ':BorrarUno');
   $group->get('/InformeListosParaServirTodos', \PedidoController::class . ':EmitirInformeListosParaServirTodos')->add(new CheckMozoMiddleware());
@@ -126,7 +126,7 @@ $app->group('/Cliente', function (RouteCollectorProxy $group) {
 $app->group('/Log', function (RouteCollectorProxy $group) {
   $group->get('/InformeOperacionesPorSector',  \LogController::class . ':EmitirInformeOperacionesPorSector')->add(new CheckSocioMiddleware());  
   $group->get('/InformeOperacionesPorEmpleadoPorSector',  \LogController::class . ':EmitirInformeOperacionesPorEmpleadoPorSector')->add(new CheckSocioMiddleware());
-  $group->get('/InformeDeLoginPorEmpleado/{idEmpleado}', \LogController::class . ':EmitirInformeDeLoginPorEmpleado')->add(new CheckSocioMiddleware());
+  $group->get('/InformeDeLoginPorEmpleado', \LogController::class . ':EmitirInformeDeLoginPorEmpleado')->add(new CheckSocioMiddleware());
   $group->get('/InformeOperacionesPorEmpleado/{idEmpleado}', \LogController::class . ':EmitirInformeOperacionesPorEmpleado')->add(new CheckSocioMiddleware());      
 })->add(new CheckTokenMiddleware());
 

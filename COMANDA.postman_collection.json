@@ -628,7 +628,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ1ODEsImV4cCI6MTcwODQ5MDU4MSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiQ3Jpc3RpYW4iLCJwZXJmaWwiOiJtb3pvIn0sImFwcCI6IlRlc3QgSldUIn0.zNsA1AYAZXVv15ePwzUxQiZcjzCfRTHbXLAPU2nozrc",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTMyNDgsImV4cCI6MTcwODkyOTI0OCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiQ3Jpc3RpYW4iLCJwZXJmaWwiOiJtb3pvIn0sImFwcCI6IlRlc3QgSldUIn0.LYov-pKEUpTYwOknKYVn7fcDJPTpE7XudnhJ8LCotTg",
 							"type": "string"
 						}
 					]
@@ -674,15 +674,25 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ1ODEsImV4cCI6MTcwODQ5MDU4MSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiQ3Jpc3RpYW4iLCJwZXJmaWwiOiJtb3pvIn0sImFwcCI6IlRlc3QgSldUIn0.zNsA1AYAZXVv15ePwzUxQiZcjzCfRTHbXLAPU2nozrc",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTMyNDgsImV4cCI6MTcwODkyOTI0OCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiQ3Jpc3RpYW4iLCJwZXJmaWwiOiJtb3pvIn0sImFwcCI6IlRlc3QgSldUIn0.LYov-pKEUpTYwOknKYVn7fcDJPTpE7XudnhJ8LCotTg",
 							"type": "string"
 						}
 					]
 				},
-				"method": "GET",
+				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "idMesa",
+							"value": "4",
+							"type": "text"
+						}
+					]
+				},
 				"url": {
-					"raw": "http://localhost/comanda/app/mesas/CobrarMesa/4",
+					"raw": "http://localhost/comanda/app/mesas/CobrarMesa",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -691,8 +701,7 @@
 						"comanda",
 						"app",
 						"mesas",
-						"CobrarMesa",
-						"4"
+						"CobrarMesa"
 					]
 				}
 			},
@@ -706,7 +715,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ0MDUsImV4cCI6MTcwODQ5MDQwNSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.x5r6486cPzHgKc3vqS7eEROARjCcFC1exBctl37XjLI",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUxMzgsImV4cCI6MTcwODkzMTEzOCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.aEaWm8ydBYYJ21xHmCuFWN00TbzYT4mXCU-Yu4Kxo9Q",
 							"type": "string"
 						}
 					]
@@ -715,10 +724,16 @@
 				"header": [],
 				"body": {
 					"mode": "urlencoded",
-					"urlencoded": []
+					"urlencoded": [
+						{
+							"key": "idMesa",
+							"value": "4",
+							"type": "text"
+						}
+					]
 				},
 				"url": {
-					"raw": "http://localhost/comanda/app/mesas/CerrarMesa/4",
+					"raw": "http://localhost/comanda/app/mesas/CerrarMesa",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -727,8 +742,7 @@
 						"comanda",
 						"app",
 						"mesas",
-						"CerrarMesa",
-						"4"
+						"CerrarMesa"
 					]
 				}
 			},
@@ -742,7 +756,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ0MDUsImV4cCI6MTcwODQ5MDQwNSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.x5r6486cPzHgKc3vqS7eEROARjCcFC1exBctl37XjLI",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg5NTUxMTcsImV4cCI6MTcwODk5MTExNywiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8iLCJpZCI6MX0sImFwcCI6IlRlc3QgSldUIn0.osuEZtVHn-4Np_cTtr-qVP0RGYGlYVTCkFaiJqLLAYA",
 							"type": "string"
 						}
 					]
@@ -774,7 +788,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDgxMTc3MjgsImV4cCI6MTcwODE1MzcyOCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiQ3Jpc3RpYW4iLCJwZXJmaWwiOiJtb3pvIn0sImFwcCI6IlRlc3QgSldUIn0.XfmFy6wsO1VJZAbMbfdluaDz8eZvUmrHWG6hr0auQe0",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTMyNDgsImV4cCI6MTcwODkyOTI0OCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiQ3Jpc3RpYW4iLCJwZXJmaWwiOiJtb3pvIn0sImFwcCI6IlRlc3QgSldUIn0.LYov-pKEUpTYwOknKYVn7fcDJPTpE7XudnhJ8LCotTg",
 							"type": "string"
 						}
 					]
@@ -787,11 +801,6 @@
 						{
 							"key": "idMesa",
 							"value": "4",
-							"type": "text"
-						},
-						{
-							"key": "codigoPedido",
-							"value": "P1003",
 							"type": "text"
 						},
 						{
@@ -845,7 +854,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDE3OTc1OTYsImV4cCI6MTcwMTgzMzU5NiwiYXVkIjoiY2UwMmE4MTk5ZTE4OWY4ZjI0YmFhN2ExNjllMWE3ZDYyNWNiMjJjMSIsImRhdGEiOnsibm9tYnJlIjoiTWFyY2VsYSIsInBlcmZpbCI6Im1vem8ifSwiYXBwIjoiVGVzdCBKV1QifQ.60eIequAciW5RrQ9udOjiRrvznw6n5FBqVsq2-P99lc",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTMyNDgsImV4cCI6MTcwODkyOTI0OCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiQ3Jpc3RpYW4iLCJwZXJmaWwiOiJtb3pvIn0sImFwcCI6IlRlc3QgSldUIn0.LYov-pKEUpTYwOknKYVn7fcDJPTpE7XudnhJ8LCotTg",
 							"type": "string"
 						}
 					]
@@ -858,11 +867,11 @@
 						{
 							"key": "fotoMesa",
 							"type": "file",
-							"src": "/C:/Users/USUARIO/Pictures/Mesas/foto2.jpg"
+							"src": "/C:/xampp/htdocs/comanda/fotosMesas/3.jpg"
 						},
 						{
-							"key": "idPedido",
-							"value": "30",
+							"key": "codigoPedido",
+							"value": "p17",
 							"type": "text"
 						}
 					]
@@ -886,6 +895,16 @@
 		{
 			"name": "Pedido Listar Todos",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUxMzgsImV4cCI6MTcwODkzMTEzOCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.aEaWm8ydBYYJ21xHmCuFWN00TbzYT4mXCU-Yu4Kxo9Q",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -985,7 +1004,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDE3OTgxNzIsImV4cCI6MTcwMTgzNDE3MiwiYXVkIjoiY2UwMmE4MTk5ZTE4OWY4ZjI0YmFhN2ExNjllMWE3ZDYyNWNiMjJjMSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.D5rkPMN-K5h0qGQkfJYZA8TFp1uvflwJ_po7C_gA8-8",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUxMzgsImV4cCI6MTcwODkzMTEzOCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.aEaWm8ydBYYJ21xHmCuFWN00TbzYT4mXCU-Yu4Kxo9Q",
 							"type": "string"
 						}
 					]
@@ -993,7 +1012,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost/comanda/app/pedidos/InformeDePedidosYDemoras?codigoMesa=A1004&codigoPedido=P1003",
+					"raw": "http://localhost/comanda/app/pedidos/InformeDePedidosYDemoras",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1003,16 +1022,6 @@
 						"app",
 						"pedidos",
 						"InformeDePedidosYDemoras"
-					],
-					"query": [
-						{
-							"key": "codigoMesa",
-							"value": "A1004"
-						},
-						{
-							"key": "codigoPedido",
-							"value": "P1003"
-						}
 					]
 				}
 			},
@@ -1026,7 +1035,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ1ODEsImV4cCI6MTcwODQ5MDU4MSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiQ3Jpc3RpYW4iLCJwZXJmaWwiOiJtb3pvIn0sImFwcCI6IlRlc3QgSldUIn0.zNsA1AYAZXVv15ePwzUxQiZcjzCfRTHbXLAPU2nozrc",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTMyNDgsImV4cCI6MTcwODkyOTI0OCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiQ3Jpc3RpYW4iLCJwZXJmaWwiOiJtb3pvIn0sImFwcCI6IlRlc3QgSldUIn0.LYov-pKEUpTYwOknKYVn7fcDJPTpE7XudnhJ8LCotTg",
 							"type": "string"
 						}
 					]
@@ -1057,7 +1066,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ0MDUsImV4cCI6MTcwODQ5MDQwNSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.x5r6486cPzHgKc3vqS7eEROARjCcFC1exBctl37XjLI",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUxMzgsImV4cCI6MTcwODkzMTEzOCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.aEaWm8ydBYYJ21xHmCuFWN00TbzYT4mXCU-Yu4Kxo9Q",
 							"type": "string"
 						}
 					]
@@ -1088,7 +1097,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ0MDUsImV4cCI6MTcwODQ5MDQwNSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.x5r6486cPzHgKc3vqS7eEROARjCcFC1exBctl37XjLI",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg5NTUxMTcsImV4cCI6MTcwODk5MTExNywiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8iLCJpZCI6MX0sImFwcCI6IlRlc3QgSldUIn0.osuEZtVHn-4Np_cTtr-qVP0RGYGlYVTCkFaiJqLLAYA",
 							"type": "string"
 						}
 					]
@@ -1119,7 +1128,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ0MDUsImV4cCI6MTcwODQ5MDQwNSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.x5r6486cPzHgKc3vqS7eEROARjCcFC1exBctl37XjLI",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg5NTUxMTcsImV4cCI6MTcwODk5MTExNywiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8iLCJpZCI6MX0sImFwcCI6IlRlc3QgSldUIn0.osuEZtVHn-4Np_cTtr-qVP0RGYGlYVTCkFaiJqLLAYA",
 							"type": "string"
 						}
 					]
@@ -1212,7 +1221,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDA1MTI0MjUsImV4cCI6MTcwMDU0ODQyNSwiYXVkIjoiY2UwMmE4MTk5ZTE4OWY4ZjI0YmFhN2ExNjllMWE3ZDYyNWNiMjJjMSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.g748CFQlBAMw_Zr0pMn8L5Lj5lhQfR5yLrAuLJZpj4U",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg5NTE4MDQsImV4cCI6MTcwODk4NzgwNCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8iLCJpZCI6MX0sImFwcCI6IlRlc3QgSldUIn0.4jgdTzlhYDdKDj45FsD4288PA7Jv9oh_WrLBD4FvdW8",
 							"type": "string"
 						}
 					]
@@ -1220,7 +1229,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost/comanda/app/pedidos/InformeMesasMayorFacturacion",
+					"raw": "http://localhost/comanda/app/pedidos/InformeMesasPorFacturacion",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1229,7 +1238,7 @@
 						"comanda",
 						"app",
 						"pedidos",
-						"InformeMesasMayorFacturacion"
+						"InformeMesasPorFacturacion"
 					]
 				}
 			},
@@ -1274,7 +1283,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ2MzYsImV4cCI6MTcwODQ5MDYzNiwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTHVjYXMiLCJwZXJmaWwiOiJiYXJ0ZW5kZXIifSwiYXBwIjoiVGVzdCBKV1QifQ.bQZZ9ayA2F5iPO3XWz0m364Y-zzM41PakmFCWdfc8Pc",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUwMjYsImV4cCI6MTcwODkzMTAyNiwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTHVjYXMiLCJwZXJmaWwiOiJiYXJ0ZW5kZXIifSwiYXBwIjoiVGVzdCBKV1QifQ.2VHt7014XT5yH_cqcLc3ys6r54RztTx1YFVN7I8ZC5I",
 							"type": "string"
 						}
 					]
@@ -1305,7 +1314,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDE4MjM2MzcsImV4cCI6MTcwMTg1OTYzNywiYXVkIjoiY2UwMmE4MTk5ZTE4OWY4ZjI0YmFhN2ExNjllMWE3ZDYyNWNiMjJjMSIsImRhdGEiOnsibm9tYnJlIjoiTHVjYXMiLCJwZXJmaWwiOiJiYXJ0ZW5kZXIifSwiYXBwIjoiVGVzdCBKV1QifQ.TIrJcfXyyoeuzKQlUkjo4uol0S7TrWWUZl2CQZxJ8Gs",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUwMjYsImV4cCI6MTcwODkzMTAyNiwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTHVjYXMiLCJwZXJmaWwiOiJiYXJ0ZW5kZXIifSwiYXBwIjoiVGVzdCBKV1QifQ.2VHt7014XT5yH_cqcLc3ys6r54RztTx1YFVN7I8ZC5I",
 							"type": "string"
 						}
 					]
@@ -1323,6 +1332,11 @@
 						{
 							"key": "idEmpleado",
 							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "idProductoPendiente",
+							"value": "27",
 							"type": "text"
 						}
 					]
@@ -1351,7 +1365,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ2MzYsImV4cCI6MTcwODQ5MDYzNiwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTHVjYXMiLCJwZXJmaWwiOiJiYXJ0ZW5kZXIifSwiYXBwIjoiVGVzdCBKV1QifQ.bQZZ9ayA2F5iPO3XWz0m364Y-zzM41PakmFCWdfc8Pc",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUwMjYsImV4cCI6MTcwODkzMTAyNiwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTHVjYXMiLCJwZXJmaWwiOiJiYXJ0ZW5kZXIifSwiYXBwIjoiVGVzdCBKV1QifQ.2VHt7014XT5yH_cqcLc3ys6r54RztTx1YFVN7I8ZC5I",
 							"type": "string"
 						}
 					]
@@ -1364,6 +1378,11 @@
 						{
 							"key": "estado",
 							"value": "listo para servir",
+							"type": "text"
+						},
+						{
+							"key": "idProductoPedidoTerminado",
+							"value": "27",
 							"type": "text"
 						}
 					]
@@ -1423,7 +1442,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ0ODcsImV4cCI6MTcwODQ5MDQ4NywiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTGVhbmRybyIsInBlcmZpbCI6ImNlcnZlY2VybyJ9LCJhcHAiOiJUZXN0IEpXVCJ9.3QmJy_1nuq401MveGHInbRAmrmLOKY-AOGKcSlTl2Iw",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUxMDMsImV4cCI6MTcwODkzMTEwMywiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTGVhbmRybyIsInBlcmZpbCI6ImNlcnZlY2VybyJ9LCJhcHAiOiJUZXN0IEpXVCJ9.lVekOq_g5g0MF6Kh0nWJa7MLwUgUiiexUTNfA8EKxis",
 							"type": "string"
 						}
 					]
@@ -1454,7 +1473,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDE3OTgwMjIsImV4cCI6MTcwMTgzNDAyMiwiYXVkIjoiY2UwMmE4MTk5ZTE4OWY4ZjI0YmFhN2ExNjllMWE3ZDYyNWNiMjJjMSIsImRhdGEiOnsibm9tYnJlIjoiSnVsaWFuIiwicGVyZmlsIjoiY2VydmVjZXJvIn0sImFwcCI6IlRlc3QgSldUIn0.IHOTWKOhOE-Z7JAa4GOWdTie_TyVzmq9kzRS1u-yZ74",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUxMDMsImV4cCI6MTcwODkzMTEwMywiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTGVhbmRybyIsInBlcmZpbCI6ImNlcnZlY2VybyJ9LCJhcHAiOiJUZXN0IEpXVCJ9.lVekOq_g5g0MF6Kh0nWJa7MLwUgUiiexUTNfA8EKxis",
 							"type": "string"
 						}
 					]
@@ -1471,7 +1490,12 @@
 						},
 						{
 							"key": "idEmpleado",
-							"value": "7",
+							"value": "6",
+							"type": "text"
+						},
+						{
+							"key": "idProductoPendiente",
+							"value": "26",
 							"type": "text"
 						}
 					]
@@ -1500,7 +1524,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ0ODcsImV4cCI6MTcwODQ5MDQ4NywiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTGVhbmRybyIsInBlcmZpbCI6ImNlcnZlY2VybyJ9LCJhcHAiOiJUZXN0IEpXVCJ9.3QmJy_1nuq401MveGHInbRAmrmLOKY-AOGKcSlTl2Iw",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUxMDMsImV4cCI6MTcwODkzMTEwMywiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTGVhbmRybyIsInBlcmZpbCI6ImNlcnZlY2VybyJ9LCJhcHAiOiJUZXN0IEpXVCJ9.lVekOq_g5g0MF6Kh0nWJa7MLwUgUiiexUTNfA8EKxis",
 							"type": "string"
 						}
 					]
@@ -1513,6 +1537,11 @@
 						{
 							"key": "estado",
 							"value": "listo para servir",
+							"type": "text"
+						},
+						{
+							"key": "idProductoPedidoTerminado",
+							"value": "26",
 							"type": "text"
 						}
 					]
@@ -1562,7 +1591,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ1MjIsImV4cCI6MTcwODQ5MDUyMiwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTHVjaWEiLCJwZXJmaWwiOiJjb2NpbmVybyJ9LCJhcHAiOiJUZXN0IEpXVCJ9.sHv1KIA8yWUHcKtO87KyM24ZBfOeppF8XsW71KQDBSE",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUwNjEsImV4cCI6MTcwODkzMTA2MSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTHVjaWEiLCJwZXJmaWwiOiJjb2NpbmVybyJ9LCJhcHAiOiJUZXN0IEpXVCJ9.1sa3qFmqWYxskMX1_iBR7sd0JQqonvmOWPP-RevEDYQ",
 							"type": "string"
 						}
 					]
@@ -1593,7 +1622,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDE3OTgwODMsImV4cCI6MTcwMTgzNDA4MywiYXVkIjoiY2UwMmE4MTk5ZTE4OWY4ZjI0YmFhN2ExNjllMWE3ZDYyNWNiMjJjMSIsImRhdGEiOnsibm9tYnJlIjoiTHVjaWEiLCJwZXJmaWwiOiJjb2NpbmVybyJ9LCJhcHAiOiJUZXN0IEpXVCJ9.5kN7xQe4Yl_04-XUsG0vcJPPW7gIBcghWJLWG-zKTLs",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUwNjEsImV4cCI6MTcwODkzMTA2MSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTHVjaWEiLCJwZXJmaWwiOiJjb2NpbmVybyJ9LCJhcHAiOiJUZXN0IEpXVCJ9.1sa3qFmqWYxskMX1_iBR7sd0JQqonvmOWPP-RevEDYQ",
 							"type": "string"
 						}
 					]
@@ -1610,7 +1639,12 @@
 						},
 						{
 							"key": "idEmpleado",
-							"value": "9",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "idProductoPendiente",
+							"value": "24",
 							"type": "text"
 						}
 					]
@@ -1639,7 +1673,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ1MjIsImV4cCI6MTcwODQ5MDUyMiwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTHVjaWEiLCJwZXJmaWwiOiJjb2NpbmVybyJ9LCJhcHAiOiJUZXN0IEpXVCJ9.sHv1KIA8yWUHcKtO87KyM24ZBfOeppF8XsW71KQDBSE",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUwNjEsImV4cCI6MTcwODkzMTA2MSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTHVjaWEiLCJwZXJmaWwiOiJjb2NpbmVybyJ9LCJhcHAiOiJUZXN0IEpXVCJ9.1sa3qFmqWYxskMX1_iBR7sd0JQqonvmOWPP-RevEDYQ",
 							"type": "string"
 						}
 					]
@@ -1652,6 +1686,11 @@
 						{
 							"key": "estado",
 							"value": "listo para servir",
+							"type": "text"
+						},
+						{
+							"key": "idProductoPedidoTerminado",
+							"value": "25",
 							"type": "text"
 						}
 					]
@@ -1675,6 +1714,16 @@
 		{
 			"name": "Cocinero - Informe Productos Listos Para Servir",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg4OTUwNjEsImV4cCI6MTcwODkzMTA2MSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiTHVjaWEiLCJwZXJmaWwiOiJjb2NpbmVybyJ9LCJhcHAiOiJUZXN0IEpXVCJ9.1sa3qFmqWYxskMX1_iBR7sd0JQqonvmOWPP-RevEDYQ",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -1701,7 +1750,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ0MDUsImV4cCI6MTcwODQ5MDQwNSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.x5r6486cPzHgKc3vqS7eEROARjCcFC1exBctl37XjLI",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg5NTE4MDQsImV4cCI6MTcwODk4NzgwNCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8iLCJpZCI6MX0sImFwcCI6IlRlc3QgSldUIn0.4jgdTzlhYDdKDj45FsD4288PA7Jv9oh_WrLBD4FvdW8",
 							"type": "string"
 						}
 					]
@@ -1732,7 +1781,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ0MDUsImV4cCI6MTcwODQ5MDQwNSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.x5r6486cPzHgKc3vqS7eEROARjCcFC1exBctl37XjLI",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg5NTE4MDQsImV4cCI6MTcwODk4NzgwNCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8iLCJpZCI6MX0sImFwcCI6IlRlc3QgSldUIn0.4jgdTzlhYDdKDj45FsD4288PA7Jv9oh_WrLBD4FvdW8",
 							"type": "string"
 						}
 					]
@@ -1763,7 +1812,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ0MDUsImV4cCI6MTcwODQ5MDQwNSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.x5r6486cPzHgKc3vqS7eEROARjCcFC1exBctl37XjLI",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg5NTE4MDQsImV4cCI6MTcwODk4NzgwNCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8iLCJpZCI6MX0sImFwcCI6IlRlc3QgSldUIn0.4jgdTzlhYDdKDj45FsD4288PA7Jv9oh_WrLBD4FvdW8",
 							"type": "string"
 						}
 					]
@@ -1788,21 +1837,28 @@
 		},
 		{
 			"name": "Socio - Informe De Login Por Empleado",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ0MDUsImV4cCI6MTcwODQ5MDQwNSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.x5r6486cPzHgKc3vqS7eEROARjCcFC1exBctl37XjLI",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg5NTE4MDQsImV4cCI6MTcwODk4NzgwNCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8iLCJpZCI6MX0sImFwcCI6IlRlc3QgSldUIn0.4jgdTzlhYDdKDj45FsD4288PA7Jv9oh_WrLBD4FvdW8",
 							"type": "string"
 						}
 					]
 				},
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
 				"url": {
-					"raw": "http://localhost/comanda/app/Log/InformeDeLoginPorEmpleado/1",
+					"raw": "http://localhost/comanda/app/Log/InformeDeLoginPorEmpleado?idEmpleado=7",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1811,8 +1867,13 @@
 						"comanda",
 						"app",
 						"Log",
-						"InformeDeLoginPorEmpleado",
-						"1"
+						"InformeDeLoginPorEmpleado"
+					],
+					"query": [
+						{
+							"key": "idEmpleado",
+							"value": "7"
+						}
 					]
 				}
 			},
@@ -1889,7 +1950,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDE2NjcxMjgsImV4cCI6MTcwMTcwMzEyOCwiYXVkIjoiY2UwMmE4MTk5ZTE4OWY4ZjI0YmFhN2ExNjllMWE3ZDYyNWNiMjJjMSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.luegyIW_bPh4vn9coOF03GLt0XCYOwX31qlJuhCQgww",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg5NTE4MDQsImV4cCI6MTcwODk4NzgwNCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8iLCJpZCI6MX0sImFwcCI6IlRlc3QgSldUIn0.4jgdTzlhYDdKDj45FsD4288PA7Jv9oh_WrLBD4FvdW8",
 							"type": "string"
 						}
 					]
@@ -1897,7 +1958,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost/comanda/app/pedidos/InformeFacturadoEntreFechas?idMesa=5&fechaDesde=2023-11-17&fechaHasta=2023-11-21",
+					"raw": "http://localhost/comanda/app/pedidos/InformeFacturadoEntreFechas?idMesa=4&fechaDesde=2023-11-17&fechaHasta=2024-02-27",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1911,7 +1972,7 @@
 					"query": [
 						{
 							"key": "idMesa",
-							"value": "5"
+							"value": "4"
 						},
 						{
 							"key": "fechaDesde",
@@ -1919,7 +1980,7 @@
 						},
 						{
 							"key": "fechaHasta",
-							"value": "2023-11-21"
+							"value": "2024-02-27"
 						}
 					]
 				}
@@ -1934,7 +1995,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg0NTQ0MDUsImV4cCI6MTcwODQ5MDQwNSwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8ifSwiYXBwIjoiVGVzdCBKV1QifQ.x5r6486cPzHgKc3vqS7eEROARjCcFC1exBctl37XjLI",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDg5NTE4MDQsImV4cCI6MTcwODk4NzgwNCwiYXVkIjoiYTcyNzZiNDUwYTE2MDAzN2UyMjg4YmZhNDc3YmM4NzVkZjcxODU0ZSIsImRhdGEiOnsibm9tYnJlIjoiRGFuaWVsIiwicGVyZmlsIjoic29jaW8iLCJpZCI6MX0sImFwcCI6IlRlc3QgSldUIn0.4jgdTzlhYDdKDj45FsD4288PA7Jv9oh_WrLBD4FvdW8",
 							"type": "string"
 						}
 					]
@@ -1962,7 +2023,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost/comanda/app/Cliente/InformeTiempoDeDemoraPedido?codigoMesa=A1004&codigoPedido=P1003",
+					"raw": "http://localhost/comanda/app/Cliente/InformeTiempoDeDemoraPedido?codigoMesa=M1004&codigoPedido=P17",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1976,11 +2037,11 @@
 					"query": [
 						{
 							"key": "codigoMesa",
-							"value": "A1004"
+							"value": "M1004"
 						},
 						{
 							"key": "codigoPedido",
-							"value": "P1003"
+							"value": "P17"
 						}
 					]
 				}
@@ -1997,32 +2058,32 @@
 					"urlencoded": [
 						{
 							"key": "codigoPedido",
-							"value": "P1003",
+							"value": "P17",
 							"type": "text"
 						},
 						{
 							"key": "puntuacionMesa",
-							"value": "6",
+							"value": "2",
 							"type": "text"
 						},
 						{
 							"key": "puntuacionRestaurante",
-							"value": "6",
+							"value": "4",
 							"type": "text"
 						},
 						{
 							"key": "puntuacionMozo",
-							"value": "8",
+							"value": "2",
 							"type": "text"
 						},
 						{
 							"key": "puntuacionCocinero",
-							"value": "8",
+							"value": "2",
 							"type": "text"
 						},
 						{
 							"key": "comentarios",
-							"value": "Buen comida. Un poco chico el plato.",
+							"value": "Tardo una eternidad. El plato llego frio.",
 							"type": "text"
 						}
 					]

@@ -175,9 +175,11 @@ class MesaController extends Mesa implements IApiUsable
 
   public function CobrarMesa($request, $response, $args)
   {
-    $id = $args["id"];
-    $mesa = Mesa::obtenerMesaPorId($id);  
-    $pedido = Pedido::obtenerPedidoPorIdMesaYEntregado($id);
+    $datos = $request->getParsedBody();
+    $idMesa=$datos["idMesa"]; 
+
+    $mesa = Mesa::obtenerMesaPorId($idMesa);  
+    $pedido = Pedido::obtenerPedidoPorIdMesaYEntregado($idMesa);
 
     if($mesa && $pedido) 
     {
@@ -186,20 +188,27 @@ class MesaController extends Mesa implements IApiUsable
         $mesa->estado = "con cliente pagando";
         Mesa::modificarMesa($mesa);
         $totalCobrado = 0;
-        $productoPedido = ProductoPedido::obtenerSeccionPorCodigoPedido($pedido->codigoPedido);
+        $productosPedidos = ProductoPedido::obtenerSeccionPorCodigoPedido($pedido->codigoPedido);
 
-        if($productoPedido)
+        if($productosPedidos)
         {
-          foreach ($productoPedido as $seccionPedido) {
+          foreach ($productosPedidos as $seccionPedido) 
+          {
             $producto = Producto::obtenerProductoPorId($seccionPedido->idProducto);
             $totalCobrado = $totalCobrado + ($seccionPedido->cantidad * $producto->precio);
+
+            $productosConsumidos[] = array(
+              "Producto" => $producto->nombre,
+              "Cantidad" => $seccionPedido->cantidad,
+              "Precio x Unidad" => $producto->precio
+            );
           }
 
           $pedido->totalFacturado = $totalCobrado;
           Pedido::modificarPedido($pedido);
           LogController::CargarUno($request, "Cobrar la cuenta de la mesa");  
           
-          $payload = json_encode(array("mensaje" => "El total cobrado es $". $totalCobrado));
+          $payload = json_encode(array("Mesa id" => $mesa->id, "Detalle" => $productosConsumidos, "Monto Total" => $totalCobrado));
           $response = $response->withStatus(200);
         } 
       }
@@ -222,11 +231,10 @@ class MesaController extends Mesa implements IApiUsable
   
   public function CerrarMesa($request, $response, $args)
   {
-    //$datos = $request->getParsedBody();
+    $datos = $request->getParsedBody();
+    $idMesa=$datos["idMesa"]; 
 
-    //$id = $datos["idMesa"]; 
-    $id = $args["id"];
-    $mesa = Mesa::obtenerMesaPorId($id);
+    $mesa = Mesa::obtenerMesaPorId($idMesa);
   
     if ($mesa) 
     {
@@ -236,7 +244,7 @@ class MesaController extends Mesa implements IApiUsable
         if (Mesa::modificarMesa($mesa)) 
         {
           LogController::CargarUno($request, "Cierre de mesa");  
-          $payload = json_encode(array("mensaje" => "Mesa cerrada con exito"));
+          $payload = json_encode(array("Mesa id" => $mesa->id, "Estado" => $mesa->estado));
           $response = $response->withStatus(200);
         } 
         else

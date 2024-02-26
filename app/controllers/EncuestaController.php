@@ -33,6 +33,7 @@ class EncuestaController extends Encuesta
       }
       
       $encuesta = new Encuesta();
+      $encuesta->codigoPedido = $codigoPedido;
       $encuesta->idMesa = $pedido->idMesa;
       $encuesta->puntuacionMesa = $puntuacionMesa;
       $encuesta->puntuacionRestaurante = $puntuacionRestaurante;
@@ -43,7 +44,7 @@ class EncuestaController extends Encuesta
       $encuesta->comentarios = $comentarios;
       $encuesta->crearEncuesta();
 
-      $payload = json_encode(array("mensaje" => "Gracias por completar la encuesta. Valoramos mucho su opinión."));
+      $payload = json_encode(array("mensaje" => "Encuesta exitosa."));
     }
     else
     {
@@ -57,8 +58,25 @@ class EncuestaController extends Encuesta
   public function EmitirInformeMejoresComentarios($request, $response, $args)
   {
     $encuestas = Encuesta::InformarMejoresComentarios();
+    $comentarios = array();
+
+    if ($encuestas) 
+    {
+      foreach ($encuestas as $encuesta) 
+      {
+        $comentarios[]=array(
+          "Codigo Pedido" => $encuesta->codigoPedido,
+          "Comentario" => $encuesta->comentarios
+        );
+        # code...
+      }
+      $payload = json_encode($comentarios);
+    }
+    else 
+    {
+      $payload = json_encode(array("Mensaje" => "no hay mejores comentarios"));
+    }
     LogController::CargarUno($request, "Pedido de informe de mejores comentarios");  
-    $payload = json_encode(array("Mejores comentarios de nuestros clientes: " => $encuestas));
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
   }     

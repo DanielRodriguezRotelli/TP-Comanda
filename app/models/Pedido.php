@@ -10,6 +10,7 @@ class Pedido
     public $idMozo;
     public $nombreCliente;
     public $fotoMesa;
+    public $horarioAlta;
     public $horarioPautado;
     public $horarioEntregado;
     public $totalFacturado;
@@ -21,12 +22,15 @@ class Pedido
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (idMesa, codigoPedido, idMozo, 
-        nombreCliente, fotoMesa, estado) VALUES (:idMesa, :codigoPedido, :idMozo, :nombreCliente, :fotoMesa, :estado)");
+        nombreCliente, fotoMesa, horarioAlta, estado) VALUES (:idMesa, :codigoPedido, :idMozo, :nombreCliente, :fotoMesa, :horarioAlta, :estado)");
         $consulta->bindValue(':idMesa', $this->idMesa, PDO::PARAM_INT);
         $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
         $consulta->bindValue(':idMozo', $this->idMozo, PDO::PARAM_INT);
         $consulta->bindValue(':nombreCliente', $this->nombreCliente, PDO::PARAM_STR);
         $consulta->bindValue(':fotoMesa', $this->fotoMesa, PDO::PARAM_STR);
+        $horarioAltaString = $this->horarioAlta->format('Y-m-d H:i:s');
+        $consulta->bindValue(':horarioAlta', $horarioAltaString, PDO::PARAM_STR);
+        //$consulta->bindValue(':horarioAlta', $this->horarioAlta, PDO::PARAM_STR);
         $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
         $consulta->execute();
 
@@ -36,7 +40,7 @@ class Pedido
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos WHERE estado != 'cancelado'");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
@@ -65,6 +69,16 @@ class Pedido
         $consulta->bindValue(':horarioEntregado', $pedido->horarioEntregado, PDO::PARAM_STR);
         $consulta->bindValue(':totalFacturado', $pedido->totalFacturado, PDO::PARAM_INT);
         $consulta->bindValue(':estado', $pedido->estado, PDO::PARAM_STR);
+        
+        return $consulta->execute();
+    }
+
+    public static function agregarCodigoDePedido($idPedido)
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE pedidos SET codigoPedido = :codigoPedido 
+        WHERE id = :id");
+        $consulta->bindValue(':id', $idPedido, PDO::PARAM_INT);
         
         return $consulta->execute();
     }
@@ -122,6 +136,7 @@ class Pedido
 
         return $consulta->fetchObject('Pedido');
     }
+
     public static function obtenerPedidoPorCodigo($codigoPedido)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -132,6 +147,7 @@ class Pedido
 
         return $consulta->fetchObject('Pedido');
     }
+    
     public static function obtenerPedidoPorIdMesaYEstado($idMesa)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();

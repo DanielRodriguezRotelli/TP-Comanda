@@ -64,7 +64,7 @@
                 LogController::CargarUno($request, "Descarga del logo de la empresa");
 
                 // Devuelve una respuesta de exito.
-                $payload = json_encode(array("El logo se descargo con exito. Revice su carpeta de Descargas."));
+                $payload = json_encode(array("Descarga" => "Exitosa", "Ubicacion" => "Revice su carpeta de Descargas."));
                 $response->getBody()->write($payload);
                 return $response->withHeader('Content-Type', 'application/json'); 
 

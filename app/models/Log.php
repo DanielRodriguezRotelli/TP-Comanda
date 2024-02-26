@@ -33,8 +33,7 @@ class Log
         GROUP BY u.perfil");
         $consulta->execute();
         
-        $resultados = $consulta->fetchAll(PDO::FETCH_OBJ);
-        return $resultados;
+        return $consulta->fetchAll(PDO::FETCH_OBJ);
     }
 
     public static function InformarOperacionesPorEmpleadoPorSector()

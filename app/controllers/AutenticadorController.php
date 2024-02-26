@@ -16,7 +16,7 @@ class AutenticadorController extends AutentificadorJWT
         {       
             if($parametros["clave"] == $usuarioBaseDeDatos->clave)
             {
-                $datos = array('nombre' => $usuarioBaseDeDatos->nombre, "perfil"=> $usuarioBaseDeDatos->perfil);
+                $datos = array('nombre' => $usuarioBaseDeDatos->nombre, "perfil"=> $usuarioBaseDeDatos->perfil, "id"=> $usuarioBaseDeDatos->id);
                 $token = AutentificadorJWT::CrearToken($datos);
                 LogController::CargarLogin($usuarioBaseDeDatos, "Login");
                 //$payload = json_encode(array('mensaje' => "Usuario validado. Perfil:$usuarioBaseDeDatos->perfil",'jwt' => $token));

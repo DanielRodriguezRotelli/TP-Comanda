@@ -1,6 +1,7 @@
 <?php
 require_once './models/Log.php';
 require_once './controllers/UsuarioController.php';
+require_once './models/Usuario.php';
 require_once './models/AutentificadorJWT.php';
 
 class LogController extends Log
@@ -45,6 +46,7 @@ class LogController extends Log
   public function EmitirInformeOperacionesPorSector($request, $response, $args)
   {
     $listaDeOperaciones = Log::InformarOperacionesPorSector();
+
     $informeDeOperaciones = array();
     $cantidadDeOperaciones = 0;
 
@@ -52,21 +54,27 @@ class LogController extends Log
     {
       foreach($listaDeOperaciones as $operacion)
       {
-        $mensaje = "Sector: " . $operacion->perfil. " - Cantidad de operaciones: ". $operacion->cantidad_operaciones;
+
+        $informeDeOperaciones[] = array(
+          "Sector" => $operacion->perfil,
+          "Cantidad Operaciones" => $operacion->cantidad_operaciones
+        );
+
+        //$mensaje = "Sector: " . $operacion->perfil. " - Cantidad de operaciones: ". $operacion->cantidad_operaciones;
         $cantidadDeOperaciones=$cantidadDeOperaciones+$operacion->cantidad_operaciones;
-        array_push($informeDeOperaciones, $mensaje);
+        //array_push($informeDeOperaciones, $mensaje);
       }
 
-      $mensajeTotal = "Total de operaciones de todos los sectores: " . $cantidadDeOperaciones;
-      array_push($informeDeOperaciones, $mensajeTotal);
-      LogController::CargarUno($request, "Emitir informe de operaciones por sector");
+      //$mensajeTotal = "Total de operaciones de todos los sectores: " . $cantidadDeOperaciones;
+      //array_push($informeDeOperaciones, $mensajeTotal);
+      //LogController::CargarUno($request, "Emitir informe de operaciones por sector");
+      $payload = json_encode(array("Total de operaciones" =>$cantidadDeOperaciones, "Detalle"=>$informeDeOperaciones));
     }
     else
     {
       $informeDeOperaciones = array("Mensaje" => "No se registraron operaciones.");
+      $payload = json_encode($informeDeOperaciones);
     }
-
-    $payload = json_encode($informeDeOperaciones);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
   }
@@ -74,35 +82,86 @@ class LogController extends Log
   public function EmitirInformeOperacionesPorEmpleadoPorSector($request, $response, $args)
   {
     $listaDeOperaciones = Log::InformarOperacionesPorEmpleadoPorSector();
-    $informeDeOperaciones = array();
+    /*
+    echo"<br>";
+    var_dump($listaDeOperaciones);
+    echo"<br>";
+    */
+    $informeDeOperacionesMozo = array();
+    $informeDeOperacionesBartender= array();
+    $informeDeOperacionesCervecero = array();
+    $informeDeOperacionesCocinero = array();
+    $informeDeOperacionesSocio = array();
     $cantidadDeOperaciones = 0;
 
     if(count($listaDeOperaciones)> 0)
     {
       foreach($listaDeOperaciones as $operacion)
       {
-        $mensaje = "Sector: " . $operacion->perfil. "- Id empleado: " . $operacion->idUsuario. "- Nombre: " . $operacion->nombre . " - Cantidad de operaciones: ". $operacion->cantidad_operaciones;
-        $cantidadDeOperaciones=$cantidadDeOperaciones+$operacion->cantidad_operaciones;
-        array_push($informeDeOperaciones, $mensaje);
-      }
+        switch ($operacion->perfil) 
+        {
+          case 'mozo':
+            $informeDeOperacionesMozo[] = array(
+              "Id Usuario" => $operacion->idUsuario,
+              "Nombre" => $operacion->nombre,
+              "Cantidad Operaciones" => $operacion->cantidad_operaciones
+            );
+            break;
 
-      $mensajeTotal = "Total de operaciones de todos los sectores: " . $cantidadDeOperaciones;
-      array_push($informeDeOperaciones, $mensajeTotal);
+          case 'bartender':
+            $informeDeOperacionesBartender[] = array(
+              "Id Usuario" => $operacion->idUsuario,
+              "Nombre" => $operacion->nombre,
+              "Cantidad Operaciones" => $operacion->cantidad_operaciones
+            );
+            break;
+
+          case 'cervecero':
+            $informeDeOperacionesCervecero[] = array(
+              "Id Usuario" => $operacion->idUsuario,
+              "Nombre" => $operacion->nombre,
+              "Cantidad Operaciones" => $operacion->cantidad_operaciones
+            );
+            break;
+
+          case 'cocinero':
+            $informeDeOperacionesCocinero[] = array(
+              "Id Usuario" => $operacion->idUsuario,
+              "Nombre" => $operacion->nombre,
+              "Cantidad Operaciones" => $operacion->cantidad_operaciones
+            );
+            break;
+
+          case 'socio':
+            $informeDeOperacionesSocio[] = array(
+              "Id Usuario" => $operacion->idUsuario,
+              "Nombre" => $operacion->nombre,
+              "Cantidad Operaciones" => $operacion->cantidad_operaciones
+            );
+            break;
+        }
+
+        $cantidadDeOperaciones=$cantidadDeOperaciones+$operacion->cantidad_operaciones;
+      }
+      
+      $payload = json_encode(array("Total operaciones" =>$cantidadDeOperaciones, "Mozo" => $informeDeOperacionesMozo,
+                                    "Bartender" => $informeDeOperacionesBartender,"Cervecero" => $informeDeOperacionesCervecero,
+                                    "Cocinero" => $informeDeOperacionesCocinero, "Socio" => $informeDeOperacionesSocio));
       LogController::CargarUno($request, "Emitir informe de operaciones por empleados agrupados por sector");
     }
     else
     {
-      $informeDeOperaciones = array("Mensaje" => "No se registraron operaciones.");
+      $payload = json_encode(array("Mensaje" => "No se registraron operaciones."));
     }
-
-    $payload = json_encode($informeDeOperaciones);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
   }
 
   public function EmitirInformeDeLoginPorEmpleado($request, $response, $args)
   {
-    $idEmpleado = $args["idEmpleado"];
+    $idEmpleado = $request->getQueryParams()["idEmpleado"];
+    //$idEmpleado = $args["idEmpleado"];
+    $auxEmpleado = Usuario::obtenerUsuarioPorId($idEmpleado);
     $listaDeLogins = Log::InformarLoginsPorEmpleado($idEmpleado);
     $informeDeLogins = array();
 
@@ -110,18 +169,22 @@ class LogController extends Log
     { 
       foreach($listaDeLogins as $login)
       {
-        $mensaje = "Id empleado: " . $login->idUsuario. "- Nombre: " . $login->nombre . " - Fecha de operacion: " . $login->fecha. " - Operacion: ". $login->operacion;
-        array_push($informeDeLogins, $mensaje);
+        $fecha = substr($login->fecha, 0, 10); 
+        $horario = substr($login->fecha, 11); 
+        $informeDeLogins[] = array(
+          "Fecha" => $fecha,
+          "Horario" => $horario
+        );
       }
 
       LogController::CargarUno($request, "Emitir informe de logins por empleado");
+      $payload = json_encode(array("Id Usuario" => $idEmpleado, "Nombre Usuario" => $auxEmpleado->nombre, "Logins" => $informeDeLogins));
     }
     else
     {
-      $informeDeLogins = array("Mensaje" => "No se registraron logins para este empleado.");
+      $payload = json_encode(array("Mensaje" => "No se registraron logins para este empleado."));
     }
 
-    $payload = json_encode($informeDeLogins);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
   }

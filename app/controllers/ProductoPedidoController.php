@@ -105,6 +105,7 @@ class ProductoPedidoController extends ProductoPedido
 
   public function EmitirInformePendientesPorPerfil($request, $response, $args)
   {
+    
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
     $perfil="";
@@ -123,17 +124,24 @@ class ProductoPedidoController extends ProductoPedido
     }
 
     $pedidosPendientes = ProductoPedido::InformarPendientesPorPerfil($perfil);
-
-    /*
-    echo "<br> PENDIENTES <br>";
-    var_dump($pedidosPendientes);
-    echo "<br>";
-    */
+    
     $cantidadPendientes = count($pedidosPendientes);
     if($cantidadPendientes > 0)
     {         
       LogController::CargarUno($request, "Emitir informe de pedidos pendientes por perfil");  
-      $payload = json_encode(array($cantidadPendientes . " pedidos pendiente. Detalle: "=> $pedidosPendientes));
+
+      $pedidos = array();
+      foreach ($pedidosPendientes as $pedido) 
+      {
+          $pedidos[] = array(
+            "id" => $pedido->id,
+            "codigoPedido" => $pedido->codigoPedido,
+            "idProducto" => $pedido->idProducto,
+            "cantidad" => $pedido->cantidad
+          );
+      }
+
+      $payload = json_encode(array("Pedidos pendiente: " => $cantidadPendientes, "Detalle: "=> $pedidos));
       $response->getBody()->write($payload);
       $response = $response->withStatus(200);
       return $response->withHeader('Content-Type', 'application/json'); 
@@ -149,6 +157,8 @@ class ProductoPedidoController extends ProductoPedido
 
   public function TomaDePedidoPorPerfil($request, $response, $args)
   {
+    $perfil="";
+
     $uri=$_SERVER['REQUEST_URI'];
   
     switch($uri)
@@ -167,24 +177,42 @@ class ProductoPedidoController extends ProductoPedido
     $parametros = $request->getParsedBody();
     $estado = isset($parametros['estado']) ? $parametros['estado'] : null;
     $idEmpleado = isset($parametros['idEmpleado']) ? $parametros['idEmpleado'] : null;
-
-    //echo"<br> estado: ".$estado ."<br>";
-    //echo"<br> idEmpleado: ".$idEmpleado ."<br>";
+    $idProductoPendiente = isset($parametros['idProductoPendiente']) ? $parametros['idProductoPendiente'] : null;
 
     $productoPedidosPendientes = ProductoPedido::InformarPendientesPorPerfil($perfil);
     $cantidadPendientes = count($productoPedidosPendientes);
 
+    $productoAPreparar = ProductoPedido::ObtenerProductoPedidoPorId($idProductoPendiente);
+
     if($cantidadPendientes > 0)
     {
-      $pedidoTomado = $productoPedidosPendientes[0];
 
+      if ($productoAPreparar->estado != "Pendiente") 
+      {
+        $payload = json_encode(array("mensaje" => "No hay pedidos pendientes con ese id"));
+        $response->getBody()->write($payload);
+        $response = $response->withStatus(400);
+        return $response->withHeader('Content-Type', 'application/json');
+      }
+
+      if ($productoAPreparar->perfil != $perfil) 
+      {
+        $payload = json_encode(array("mensaje" => "El producto no correspode a su sector."));
+        $response->getBody()->write($payload);
+        $response = $response->withStatus(400);
+        return $response->withHeader('Content-Type', 'application/json');
+      }
+
+      $pedidoTomado = $productoAPreparar;
+      
       $pedidoTomado->idEmpleado = $idEmpleado;
       $pedidoTomado->estado = $estado;
+      
       date_default_timezone_set('America/Argentina/Buenos_Aires');
       $tiempoDeTrabajo=random_int(10, 30);
       $pedidoTomado->horarioPautado=date('Y-m-d  H:i:s', strtotime("+{$tiempoDeTrabajo} minutes"));
-      ProductoPedido::TomarPedidoPorPerfil($pedidoTomado);
 
+      ProductoPedido::TomarPedidoPorPerfil($pedidoTomado);
       PedidoController::calcularTiempoDelPedido();
       LogController::CargarUno($request, "Empezar a preparar un pedido");  
       
@@ -204,6 +232,7 @@ class ProductoPedidoController extends ProductoPedido
 
   public static function TerminarPedidoPorPerfil($request, $response, $args)
   {
+    $perfil="";
     $uri=$_SERVER['REQUEST_URI'];
   
     switch($uri)
@@ -220,48 +249,62 @@ class ProductoPedidoController extends ProductoPedido
     }
     $parametros = $request->getParsedBody();
     $estado = isset($parametros['estado']) ? $parametros['estado'] : null;
+    $idProductoPedidoTerminado = isset($parametros['idProductoPedidoTerminado']) ? $parametros['idProductoPedidoTerminado'] : null;
 
     $productosPedidosEnPreparacion = ProductoPedido::InformarEnPreparacionPorPerfil($perfil);
     $cantidadPendientes = count($productosPedidosEnPreparacion);
-    $productoPedidoATerminar=$productosPedidosEnPreparacion[0];
+    //$productoPedidoATerminar=$productosPedidosEnPreparacion[0];
+
+    $productoATerminar = ProductoPedido::ObtenerProductoPedidoPorId($idProductoPedidoTerminado);
 
     if ($cantidadPendientes > 0) 
     {
-      $seccionesPedidos = ProductoPedido::obtenerSeccionPorCodigoPedido($productoPedidoATerminar->codigoPedido);
-      foreach($seccionesPedidos as $seccion)
+      if ($productoATerminar->estado != "en preparacion") 
       {
-        if(strcmp($seccion->estado, "en preparacion") == 0 && strcmp($seccion->perfil, $perfil) == 0)////
-        {
-          $seccion->estado= $estado;
-          ProductoPedido::modificarProductoPedido($seccion);
-          $mensajeTrabajo = "El " . $perfil . " ha terminado su trabajo.";
-        }
+        $payload = json_encode(array("mensaje" => "No hay pedidos en preparacion con ese id"));
+        $response->getBody()->write($payload);
+        $response = $response->withStatus(400);
+        return $response->withHeader('Content-Type', 'application/json');
       }
+
+      if ($productoATerminar->perfil != $perfil) 
+      {
+        $payload = json_encode(array("mensaje" => "El producto no correspode a su sector."));
+        $response->getBody()->write($payload);
+        $response = $response->withStatus(400);
+        return $response->withHeader('Content-Type', 'application/json');
+      }
+     
+      $productoATerminar->estado= $estado;
+      $auxProductoATerminar = Producto::obtenerProductoPorId($productoATerminar->idProducto);
+      ProductoPedido::modificarProductoPedido($productoATerminar);
+      //$mensajeTrabajo = "Producto Pedido" => $productoATerminar->idProducto, "Estado" => "terminado";
       LogController::CargarUno($request, "Terminar de preparar un pedido");  
     }
     else
     {
-      $payload = json_encode(array("mensaje" => "No hay pedidos pendientes"));
+      $payload = json_encode(array("mensaje" => "No hay pedidos en preparacion"));
       $response->getBody()->write($payload);
       $response = $response->withStatus(400);
       return $response->withHeader('Content-Type', 'application/json');   
     } 
 
-    if (ProductoPedidoController::VerificarEstadoProductosPorPedido($productoPedidoATerminar->codigoPedido))
+    if (ProductoPedidoController::VerificarEstadoProductosPorPedido($productoATerminar->codigoPedido))
     {
-      $pedidoATerminar=Pedido::obtenerPedido($productoPedidoATerminar->codigoPedido);
+      $pedidoATerminar=Pedido::obtenerPedido($productoATerminar->codigoPedido);
       $pedidoATerminar->estado= "listo para servir";
       Pedido::modificarPedido($pedidoATerminar);
-      $payload = json_encode(array("mensaje" => $mensajeTrabajo . " El pedido se encuentra listo para servir"));
+      $payload = json_encode(array("Producto del Pedido" => $productoATerminar->id, "Estado" => "terminado", "Pedido" => " El pedido se encuentra listo para servir"));
     } 
     else 
     {
-      $payload = json_encode(array("mensaje" => $mensajeTrabajo . " Aún quedan productos del pedido por terminar"));
+      $payload = json_encode(array("Producto del Pedido" => $productoATerminar->id, "Estado" => "terminado", "Pedido" => " Aún quedan productos del pedido por terminar"));
     }
 
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
   }
+
 
   public static function VerificarEstadoProductosPorPedido($codigoPedido)
   {
@@ -325,8 +368,11 @@ class ProductoPedidoController extends ProductoPedido
     {    
       foreach($pedidosConProductos as $pedidoConProd)
       { 
-        $mensaje = "Id del producto: " . $pedidoConProd->idProducto. " - Nombre del producto: " . $pedidoConProd->nombre. " - Cantidad vendida: " . $pedidoConProd->cantidad_vendida;
-        array_push($listaProdVendidos, $mensaje);
+        $listaProdVendidos[] = array(
+          "id Producto" => $pedidoConProd->idProducto,
+          "Nombre del producto" => $pedidoConProd->nombre,
+          "Cantidad Vendida" => $pedidoConProd->cantidad_vendida
+        );
       }
 
       LogController::CargarUno($request, "Emitir listado de productos por cantidad vendida");  

@@ -38,6 +38,18 @@ class ProductoPedido
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'ProductoPedido');
     }
 
+    public static function ObtenerProductoPedidoPorId($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM productospedidos 
+        WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_STR);
+        $consulta->execute();
+
+        return $consulta->fetchObject('ProductoPedido');
+        //return $consulta->fetchAll(PDO::FETCH_CLASS, 'ProductoPedido');
+    }
+
     public static function modificarProductoPedido($pedido)
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
@@ -95,8 +107,8 @@ class ProductoPedido
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("UPDATE productospedidos SET idEmpleado = :idEmpleado, 
-        horarioPautado= :horarioPautado, estado = :estado WHERE codigoPedido = :codigoPedido AND perfil = :perfil AND estado = 'pendiente'");
-        $consulta->bindValue(':codigoPedido', $productoPedido->codigoPedido, PDO::PARAM_STR);
+        horarioPautado= :horarioPautado, estado = :estado WHERE id = :id AND perfil = :perfil AND estado = 'pendiente'");
+        $consulta->bindValue(':id', $productoPedido->id, PDO::PARAM_STR);
         $consulta->bindValue(':idEmpleado', $productoPedido->idEmpleado, PDO::PARAM_INT);
         $consulta->bindValue(':perfil', $productoPedido->perfil, PDO::PARAM_STR);
         $consulta->bindValue(':horarioPautado', $productoPedido->horarioPautado);
@@ -140,4 +152,5 @@ class ProductoPedido
         return $consulta->fetchAll(PDO::FETCH_OBJ);
     }
 }
+
 ?>
